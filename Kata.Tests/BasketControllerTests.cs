@@ -25,6 +25,23 @@ public class BasketControllerTests
         );
     }
 
+    [Test]
+    public void ViewBasket_ShouldReturnOk()
+    {
+        //Arrange
+        var item = "A";
+        var quantity = 2;
+
+        //Act
+        var response = _basketController.AddItemToBasket(item, quantity);
+        var result = response as OkResult;
+
+        //Assert
+        Assert.IsNotNull(response);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(result.StatusCode, (int)HttpStatusCode.OK);
+    }
+
     #region AddItemToBasket tests   
     [Test]
     public void AddItemToBasket_ValidItem_ShouldReturnOk()
