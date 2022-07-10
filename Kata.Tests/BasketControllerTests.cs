@@ -25,23 +25,6 @@ public class BasketControllerTests
         );
     }
 
-    [Test]
-    public void ViewBasket_ShouldReturnOk()
-    {
-        //Arrange
-        var item = "A";
-        var quantity = 2;
-
-        //Act
-        var response = _basketController.AddItemToBasket(item, quantity);
-        var result = response as OkResult;
-
-        //Assert
-        Assert.IsNotNull(response);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(result.StatusCode, (int)HttpStatusCode.OK);
-    }
-
     #region AddItemToBasket tests   
     [Test]
     public void AddItemToBasket_ValidItem_ShouldReturnOk()
@@ -124,6 +107,74 @@ public class BasketControllerTests
 
         //Act
         var response = _basketController.AddItemToBasket(item, quantity);
+        var result = response as BadRequestObjectResult;
+
+        //Assert
+        Assert.IsNotNull(response);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(result.StatusCode, (int)HttpStatusCode.BadRequest);
+    }
+    #endregion
+
+    #region ViewBasket tests
+    [Test]
+    public void ViewBasket_ShouldReturnOk()
+    {
+        //Act
+        var response = _basketController.ViewBasket();
+        var result = response as OkObjectResult;
+
+        //Assert
+        Assert.IsNotNull(response);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(result.StatusCode, (int)HttpStatusCode.OK);
+    }
+
+    [Test]
+    public void ViewBasket_CatchException_ShouldReturnBadRequest()
+    {
+        //Arrange
+        _mockBasketService.Setup(
+            service =>
+                service.GetBasket()
+                ).Throws<Exception>();
+
+        //Act
+        var response = _basketController.ViewBasket();
+        var result = response as BadRequestObjectResult;
+
+        //Assert
+        Assert.IsNotNull(response);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(result.StatusCode, (int)HttpStatusCode.BadRequest);
+    }
+    #endregion
+
+    #region ClearBasket tests
+    [Test]
+    public void ClearBasket_ShouldReturnOk()
+    {
+        //Act
+        var response = _basketController.ClearBasket();
+        var result = response as OkResult;
+
+        //Assert
+        Assert.IsNotNull(response);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(result.StatusCode, (int)HttpStatusCode.OK);
+    }
+
+    [Test]
+    public void ClearBasket_CatchException_ShouldReturnBadRequest()
+    {
+        //Arrange
+        _mockBasketService.Setup(
+            service =>
+                service.ClearBasket()
+                ).Throws<Exception>();
+
+        //Act
+        var response = _basketController.ClearBasket();
         var result = response as BadRequestObjectResult;
 
         //Assert
