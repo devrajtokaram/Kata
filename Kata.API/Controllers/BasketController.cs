@@ -20,19 +20,19 @@ public class BasketController : ControllerBase
         _basketService = basketService;
     }
 
-    [HttpGet("add/{sku}/{count}")]
-    public IActionResult AddItemToBasket(string sku, int count)
+    [HttpGet("add/{sku}/{quantity}")]
+    public IActionResult AddItemToBasket(string sku, int quantity)
     {
-        _logger.LogInformation($"Given sku: {sku} and count: {count} to add an item to the basket.");
+        _logger.LogInformation($"Given sku: {sku} and quantity: {quantity} to add an item to the basket.");
         if (string.IsNullOrWhiteSpace(sku))
         {
             _logger.LogError("SKU id is null or empty");
             return BadRequest("SKU id cannot be null or empty");
         }
 
-        if (count <= 0)
+        if (quantity <= 0)
         {
-            _logger.LogError("Count is zero or less to add to the Basket");
+            _logger.LogError("Quantity is zero or less to add to the Basket");
             return BadRequest("Sorry, cannot add zero or less items to the Basket");
         }
 
@@ -46,7 +46,7 @@ public class BasketController : ControllerBase
 
         try
         {
-            _basketService.AddItem(product, count);
+            _basketService.AddItem(product, quantity);
             return Ok();
         }
         catch (Exception ex)
